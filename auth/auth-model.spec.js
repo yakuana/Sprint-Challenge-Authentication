@@ -1,5 +1,5 @@
 const auth = require('./auth-model.js');
-const db = require('../data/dbConfig.js');
+const db = require('../database/dbConfig.js');
 
 describe('auth-model.js tests', () => {
 
@@ -22,13 +22,13 @@ describe('auth-model.js tests', () => {
             expect(users).toHaveLength(2);
         });
 
-        it('should find user in database by the id', async () => {
+        it('should find user in database by the username', async () => {
             // added a new user 
-            const [id] = await auth.insert({ username: 'John', password: 'smith'});
+            await auth.add({ username: 'John', password: 'smith'});
 
             // look for the added user 
             let user = await db('users')
-                .where({ id })
+                .where({ username: 'John' })
                 .first();
 
             // check if the username is in the db 
